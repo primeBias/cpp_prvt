@@ -86,7 +86,6 @@ public:
     Token(char ch, string n)   : kind(ch), name(n)    {}
 };
 
-//------------------------------------------------------------------------------
 
 class Token_stream {
 public: 
