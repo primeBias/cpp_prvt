@@ -1,0 +1,7 @@
+Give the user the sqrt() function.
+
+0.5. Add sqrt const char = 's'
+1. Add token type sqrt in the default case of get()
+2. Add primary case for sqrt using sqrt function in header file.
+	2.5. add error catching and catch for ending parenthsis of sqrt() call.
+

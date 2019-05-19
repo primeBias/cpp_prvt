@@ -1,0 +1,9 @@
+Allow the user to use pow(x,i) to mean “Multiply x with itself i times”; for example, pow(2.5,3) is 2.5*2.5*2.5.
+Require i to be an integer using the technique we used for %.
+
+0.5. Add power const char pwr = 'p'
+0.75 Add ',' case in the Token_stream::get().
+1. Add token type pwr in the default case of get()
+2. Add primary case for pwr using pow function in header file.
+	2.5 add error catching and catch for parens of pow() call
+	2.75 add error for non integer second argument.
