@@ -101,10 +101,7 @@ Token Token_stream::get()
 			s += ch;
 			while(cin.get(ch) && (isalpha(ch) || isdigit(ch))) s+=ch;
 			cin.putback(ch);
-			if (s == "sqrt") 
-			{
-				return Token(sq);
-			}
+			if (s == "sqrt") return Token(sq);
 			if (s == "pow") return Token(pwr);
 			// if (s == "quit") return Token(name);
 			return Token(name,s);
@@ -190,21 +187,16 @@ double primary()
 	}
 	case pwr:
 	{
-		// get (
 		t = ts.get();
 		if (t.kind != '(') error("'(' expected");
 
-		// get double from evaluated expression
 		double d = expression();
-		// get ,
 		t = ts.get();
 		if (t.kind != ',') error("',' expected");
 
-		// get int from evaluated expression
 		int m = narrow_cast<int>(expression());
 		d = pow(d,m);
 
-		// get )
 		t = ts.get();
 		if (t.kind != ')') error("')' expected");
 		
