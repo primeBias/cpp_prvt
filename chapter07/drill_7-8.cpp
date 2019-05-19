@@ -100,7 +100,6 @@ Token Token_stream::get()
 			if (s == "let") return Token(let);	
 			if (s == "sqrt") 
 			{
-				cin.get(ch);		// Eat '(' in sqrt()
 				return Token(sq);
 			}
 			// if (s == "quit") return Token(name);
@@ -119,6 +118,7 @@ void Token_stream::ignore(char c)
 	full = false;
 
 	char ch;
+	cout << "Searching for ; char to end invalid statement." << endl;
 	while (cin>>ch)
 		if (ch==c) return;
 }
@@ -170,15 +170,18 @@ double primary()
 	case '(':
 	{	double d = expression();
 		t = ts.get();
-		if (t.kind != ')') error("'(' expected");
+		if (t.kind != ')') error("')' expected");
 		//added below line
 		return d;
 	}
 	case sq:
 	{
+		t = ts.get();	// get the '(' 
+		if (t.kind != '(') error("'(' expected");
 		double d = sqrt(expression());
+		if (isnan(d)) error("negative sqrt computed");
 		t = ts.get();
-		if (t.kind != ')') error("'(' expected");
+		if (t.kind != ')') error("')' expected");
 		return d;
 	}
 	case '-':
@@ -261,6 +264,7 @@ double statement()
 void clean_up_mess()
 {
 	ts.ignore(print);
+	
 }
 
 const string prompt = "> ";
