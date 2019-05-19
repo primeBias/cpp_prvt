@@ -35,12 +35,13 @@ const char quit = 'Q';
 const char print = ';';
 const char number = '8';
 const char name = 'a';
+const char sq = 's';
 
 Token Token_stream::get()
 {
 	if (full) { full=false; return buffer; } // check if we already have a Token ready
 	char ch;
-	cin >> ch; // note that >> skips whitespaec (space, newline, tab, etc.)
+	cin >> ch; // note that >> skips whitespace (space, newline, tab, etc.)
 	switch (ch) {
 	case quit:
 	case print:
@@ -77,6 +78,11 @@ Token Token_stream::get()
 			while(cin.get(ch) && (isalpha(ch) || isdigit(ch))) s+=ch;
 			cin.putback(ch);
 			if (s == "let") return Token(let);	
+			if (s == "sqrt") 
+			{
+				cin.get(ch);		// Eat '(' in sqrt()
+				return Token(sq);
+			}
 			// if (s == "quit") return Token(name);
 			return Token(name,s);
 		}
@@ -148,6 +154,13 @@ double primary()
 		//added below line
 		return d;
 	}
+	case sq:
+	{
+		double d = sqrt(expression());
+		t = ts.get();
+		if (t.kind != ')') error("'(' expected");
+		return d;
+	}
 	case '-':
 		return - primary();
 	case number:
@@ -189,11 +202,9 @@ double expression()
 		switch(t.kind) {
 		case '+':
 			left += term();
-			t = ts.get()
 			break;
 		case '-':
 			left -= term();
-			t = ts.get()
 			break;
 		default:
 			ts.unget(t);
