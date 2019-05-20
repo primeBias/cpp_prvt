@@ -1,0 +1,27 @@
+Create a program that finds the most common substring of two strings
+
+function that carries a for loop of length 2
+each loop calls the function again while incrementing the level
+once level = string.size() add string to results
+
+void binary_rep(int level, int size, vector<int>& substr, vector<vector<int>>&answer)
+	for (int i = 0; i < 2; ++i)
+		substr[level] = i	
+		if (level == size)
+			answers.push_back(substr);
+		else
+			binary_rep(level+1, size, substr, answer)
+	
+(0, 0000, answers)
+0	0	0	0
+(1, 0000, answers)
+0000
+(2, 0000, answers)
+0000
+(3, 0000, answers)
+0000
+0001
+
+
+
+		
