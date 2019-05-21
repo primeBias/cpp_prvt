@@ -1,0 +1,34 @@
+class String_checker
+{
+	public:
+		String_checker(string str) :s(str) 
+		{
+			for (int i = 0; i < str.size(); ++i)
+				b.push_back(1);
+		}
+	private:
+		string s;
+		vector<int> b;
+}
+
+vector<string> all_substrings;
+
+111
+one
+1
+	1
+		1
+two
+1
+	1
+		0
+thee
+1
+	0
+		0
+four
+1
+	0
+		1
+vector<string> substring(string& s)
+

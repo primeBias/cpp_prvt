@@ -3,3 +3,23 @@ to add a member to Variable that distinguishes between constants and variables
 and check for it in set_value(). If you want to let the user define constants
 (rather than just having pi and e defined as constants), you’ll have to add a 
 notation to let the user express that, for example, const pi = 3.14;.
+
+1. add const char for adding constants
+2. add default scenario for 'const'
+	'const pi = 3.14;'
+3. add bool constant to the variable class, this signifies if variable is
+	a constant
+4. add a constructor for Variable(string name, double value, bool isConst); 
+5. add a conditional to the set_value function to check condition on 
+	is_constant, do not change the variable if is_constant returns true
+6. create new function double declare_const() that declares a const value
+	Variable v = Variable(name,d);
+	v.setConst = true;
+	names.push_back(v);
+7. create a switch case for const:
+								declare_const()
+8. add is_const function to search for const value of Variable by name
+9. if is_const returns true, throw an error in the declaration() function.
+
+
+get auto indent of braces to work.
