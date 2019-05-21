@@ -1,0 +1,4 @@
+https://stackoverflow.com/questions/199333/how-do-i-detect-unsigned-integer-multiply-overflow
+
+Thoughts:
+	check for overflow or underflow for each operation +,-,/,* 

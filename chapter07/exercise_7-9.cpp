@@ -307,7 +307,6 @@ double declare_const()
 	{
 		set_value(name,d);
 		set_const(name, true);
-		cout << "set_value() called" << endl;
 	}
 	else
 		names.push_back(Variable(name,d,true));
@@ -373,7 +372,6 @@ const string result = "= ";
 void calculate()
 {
 	while(true) try {
-		print_variables();
 		cout << prompt;
 		Token t = ts.get();
 		while (t.kind == print) t=ts.get();

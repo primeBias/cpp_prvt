@@ -1,0 +1,48 @@
+double multiply(int a, int b)
+	double ret = 0;
+	bool neg = false;
+	if ((a < 0 && b > 0) || (a > 0 && b < 0))
+		neg = true;
+		if (a < 0)
+			a = -a;
+		if (b < 0)
+			b = -b;
+
+	for (int i = 0; i < b; ++i)
+		if (ret > MAX_INT - a)
+			throw runtime_error("multiply(): overflow error.");
+		ret += a;
+
+	if (neg == true)
+		ret = -ret;
+	return ret;
+
+double add(int a, int b)
+	double ret = 0;
+	if (b < 0)
+		ret = subtract(a,-b);
+	if (a > MAX_INT - b)
+		throw runtime_error("add(): overflow error.");
+	ret = a + b;
+	return ret;
+
+double substract(int a, int b)
+	double ret = 0;
+	if (b < 0)
+		ret = add(a,-b);
+	if (a < MIN_INT + b)
+		throw runtime_error("subtract(): underflow error.");
+	return a - b;
+
+double divide(int a, int b)
+	double ret = 0;
+	bool neg = false;
+	if ((a < 0 && b > 0) || a > 0 && b < 0)
+		neg = true;
+	while(a  > 0)
+		if (a < MIN_INT + b)
+			throw runtime_error("divide(): underflow error.");
+		a -= b;
+		ret += 1;
+	
+	return ret;
