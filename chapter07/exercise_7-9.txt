@@ -1,0 +1,15 @@
+Suggest an improvement and implement it:
+	Allow for variable reassignment, be sure those variabls are not 
+	constant.
+0.5. create new function to set is_const to true called set_const.
+1. Call set_value if is_declared is true in declare_const() and
+	declaration() functions
+
+	otherwise
+	push_back the new variable
+
+when x is declared as a const first, it can no longer be declared as 
+another const or variable
+
+when x is first declared as a variable then as a const, it can again
+be changed.
