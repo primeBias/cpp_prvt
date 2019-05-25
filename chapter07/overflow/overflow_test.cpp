@@ -68,6 +68,22 @@ double multiply(int a, int b)
 	return ret;
 }
 
+double divide(int a, int b)
+{
+	double ret = 0;
+	bool neg = false;
+	if ((a < 0 && b > 0) || a > 0 && b <0)
+		neg = true;
+	while (a > 0)
+	{
+		a -= b;
+		if (a < 0)
+			return ret;
+
+		ret += 1;
+		
+	}
+}
 int main()
 {
 // 	double t1 = add(10,2147483647);
@@ -89,8 +105,8 @@ int main()
 			cout << "x= " << x << '\t' << "y= " << y << endl;
 			// double ret = add(x,y);
 			// double ret2 = subtract(x,y);
-			double ret = multiply(x,y);
-			cout << "multiply: " << ret << endl; 
+			double ret = divide(x,y);
+			cout << "divide: " << ret << endl; 
 		}
 	}
 	catch (exception& e)

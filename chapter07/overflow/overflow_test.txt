@@ -46,3 +46,11 @@ double divide(int a, int b)
 		ret += 1;
 	
 	return ret;
+
+double divide_improved(int a, int b)
+	int decimal = 0;
+	int extension;
+	double ret;
+
+	
+		
