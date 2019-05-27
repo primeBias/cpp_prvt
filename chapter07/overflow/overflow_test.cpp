@@ -68,22 +68,35 @@ double multiply(int a, int b)
 	return ret;
 }
 
-double divide(int a, int b)
+vector<int> divide(int a, int b)
 {
-	double ret = 0;
+	vector<int> ret;
+	int temp = a;
+	int answer = 0;
 	bool neg = false;
 	if ((a < 0 && b > 0) || a > 0 && b <0)
 		neg = true;
-	while (a > 0)
+	do	
 	{
-		a -= b;
-		if (a < 0)
-			return ret;
-
-		ret += 1;
+		if (temp - b >= 0)
+		{
+			temp -= b;
+			answer += 1;
+		}
+		else
+		{
+			ret.push_back(answer);
+			ret.push_back(a-answer*b);
+			temp -= b;
+		}
 		
-	}
+	} while (temp >= 0);
+
+
+	return ret;
 }
+
+
 int main()
 {
 // 	double t1 = add(10,2147483647);
@@ -105,8 +118,8 @@ int main()
 			cout << "x= " << x << '\t' << "y= " << y << endl;
 			// double ret = add(x,y);
 			// double ret2 = subtract(x,y);
-			double ret = divide(x,y);
-			cout << "divide: " << ret << endl; 
+			vector<int> ret = divide(x,y);
+			cout << "divide: " << ret[0] << '\t' << ret[1] << endl; 
 		}
 	}
 	catch (exception& e)
