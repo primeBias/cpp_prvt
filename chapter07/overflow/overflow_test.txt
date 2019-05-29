@@ -71,7 +71,8 @@ double add_decimals(int res, int decimal_places)
 
 double divide_improved(double a, double b)
 	int decimal_places = 0;
-	
+	int final_res;
+
 	vector<int> temp_a = remove_decimals(a);
 	vector<int> temp_b = remove_decimals(b);
 

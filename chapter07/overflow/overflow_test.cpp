@@ -172,10 +172,42 @@ vector<int> remove_decimals(double x)
 	return ret;
 }
 
-double divide_prec(int a, int b)
+double add_decimals(int x, int decimal_places)
+{
+	double ret = 1.0 * x;
+	for (int i = 0; i < decimal_places; ++i)
+	{
+		ret /= 10;
+	}
+
+	return ret;
+}
+
+double divide_with_precision(double a, double b)
 {
 	int decimal_places = 0;
-	return 0;
+	int final_res;
+
+	vector<int> temp_a = remove_decimals(a);
+	vector<int> temp_b = remove_decimals(b);
+
+	decimal_places = temp_a[1] - temp_b[1];
+
+	vector<int> res = divide(temp_a[0], temp_b[0]);
+	final_res = res[0];
+
+	for (int i = 0; i < 8; ++i)		// 8 digits of precision
+	{
+		if (res[1] != 0)			// if remainder is not 0
+		{
+			res = divide(res[1]*10, temp_b[0]);
+			decimal_places += 1;
+			final_res *= 10;
+			final_res += res[0];
+		}
+	}
+
+	return add_decimals(final_res, decimal_places);
 }
 
 
@@ -191,6 +223,8 @@ int main()
 	while (true) try
 	{
 		double x;
+		double d = add_decimals(1234567, 4);
+		cout << "d= " << setprecision(15) << d << endl;
 		cout << ">";
 		cin >> x;
 		if (!cin)
