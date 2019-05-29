@@ -47,6 +47,13 @@ string remove_trailing_zero(string temp)
 	return temp;
 }
 
+// problem: for doubles with a large amount of precision,
+// the '.' character is not being recognized.
+// solution: the problem has to do with to_str_with_precision. 
+// more specifically, doubles get translated to scientific
+// notation when put to a string. Easiest thing to do would
+// be able to parse and translate the scientific notation
+// into an equivalent string.
 vector<int> remove_decimals(double x)
 {
 	string temp;
@@ -57,13 +64,14 @@ vector<int> remove_decimals(double x)
 	
 	temp = to_str_with_precision(x);
 	temp = remove_trailing_zero(temp);
+	cout << "temp= " << setprecision(15) << temp << endl;
 	putback_str(temp);
 
 	temp = "";
 
 	while (cin.get(ch) && (isdigit(ch) || ch == '.' || ch == '-'))
 	{
-		if (ch == '.') { dec_flag = true; }
+		if (ch == '.') { cout << "decl_flag= true" << endl; dec_flag = true; }
 		else 
 		{
 			temp += ch;
@@ -79,20 +87,32 @@ vector<int> remove_decimals(double x)
 	cout << "temp= " << temp << endl;
 	ret.push_back(res);
 	ret.push_back(dec_places);
-
-	cin.clear();
-	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	cout << "dec_places= " << dec_places << endl;
+	// cin.clear();
+	 cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	// cin.ignore(numeric_limits<streamsize>::max(), '\n');
 	return ret;
 }
 
+// Divides `a` by `b` and returns a vector of ints.
+// Returns:
+// [1] = quotient
+// [2] = remainder
+// [3] = negative number flag
 vector<int> divide(int a, int b)
 {
 	vector<int> ret;
 	int temp = a;
 	int answer = 0;
 	bool neg = false;
-	if ((a < 0 && b > 0) || a > 0 && b <0)
-		neg = true;
+	if (b == 0) throw runtime_error("Divide by zero.");
+	if ((a < 0 && b > 0) || (a > 0 && b < 0)) neg = true;
+	if (a < 0)
+	{
+		temp = -temp;
+		a = -a;
+	}
+	if (b < 0) b = -b;
 	do	
 	{
 		if (temp - b >= 0)
@@ -102,24 +122,26 @@ vector<int> divide(int a, int b)
 		}
 		else
 		{
+			int remainder = a - answer * b;
 			ret.push_back(answer);
-			ret.push_back(a-answer*b);
+			ret.push_back(remainder);
+			if (neg) ret.push_back(-1);
+			else ret.push_back(1);
 			temp -= b;
 		}
 		
 	} while (temp >= 0);
-
-
+	
 	return ret;
 }
 
 double add_decimals(int x, int decimal_places)
 {
 	double ret = 1.0 * x;
-	for (int i = 0; i < decimal_places; ++i)
-	{
-		ret /= 10;
-	}
+	if (decimal_places >= 0)
+		for (int i = 0; i < decimal_places; ++i) ret /= 10;
+	else
+		for (int i = 0; i > decimal_places; --i) ret *= 10;
 
 	return ret;
 }
@@ -128,6 +150,7 @@ double divide_with_precision(double a, double b)
 {
 	int decimal_places = 0;
 	int final_res;
+	bool neg = false;
 
 	vector<int> temp_a = remove_decimals(a);
 	vector<int> temp_b = remove_decimals(b);
@@ -137,7 +160,7 @@ double divide_with_precision(double a, double b)
 	cout << "temp_a= " << temp_a[0] << "\ttemp_b= " << temp_b[0] << endl;
 	vector<int> res = divide(temp_a[0], temp_b[0]);
 	final_res = res[0];
-
+	if (res[2] == -1) neg = true;
 	cout << "division result..." << endl;
 	cout << res[0] << 'r' << res[1] << endl;
 
@@ -150,10 +173,13 @@ double divide_with_precision(double a, double b)
 			cout << res[0] << 'r' << res[1] << endl;
 			decimal_places += 1;
 			final_res *= 10;
+			if (final_res > numeric_limits<int>::max() - res[0]) throw runtime_error("divide_with_precision(): Overflow error.");
 			final_res += res[0];
 		}
 	}
-
+	
+	cout << "decimal_places= " << decimal_places << endl;	
+	if (neg) final_res = -final_res; 	
 	return add_decimals(final_res, decimal_places);
 }
 
