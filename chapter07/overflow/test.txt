@@ -1,0 +1,14 @@
+int main
+	string res;
+	char c;
+	while (cin.get(c) && (isdigit(c) || c == '.')
+		if (c == '.') { }
+		else res += c;
+	putback_str(res);
+
+	int x;
+	cin >> x;
+	
+void putback_str(string s)
+	for (int i = 0; i < s.size(); ++i)
+		cin.putback(s[i]);

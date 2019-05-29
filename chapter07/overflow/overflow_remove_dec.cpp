@@ -107,40 +107,62 @@ void putback_str(string s)
 		cin.putback(s[i]);
 }
 
-// code is working for some cases now. does not work for
-// .123456789. Casting from double to int seems to cause
-// problems.
+
+string to_str_with_precision(double d)
+{
+	ostringstream out;
+	out.precision(15);
+	out << d;
+	string ret = out.str();
+	return ret;
+}
+
 vector<int> remove_decimals(double x)
 {
-	int decimal_places = 0;
+	string temp;
+	char ch;
+	bool dec_flag = false;
+	int dec_places = 0;
 	vector<int> ret;
-	double epsilon = .000001;
-	bool neg = false;
-
-	if (x < 0)
-	{
-		neg = true;
-		x = -x;
-	}
-
-	int temp = x;
 	
-	while (x - temp > epsilon)
+	temp = to_str_with_precision(x);
+	// remove trailing zeros
+	char c_del = '0';
+	int index = temp.size();
+	while (c_del == '0')
 	{
-		x *= 10;
-		temp = x;		// casting double to int (removing remainder)
-		decimal_places += 1;
-		cout << "x= " << setprecision(15) << x << endl;
-		cout << "temp= " << setprecision(15) << temp << endl;
-		cout << "x - temp= " << x-temp << endl;
-		cin.get();
+		c_del = temp[index-1];
+		cout << "c_del= " << c_del << endl;
+		if (c_del == '0')
+			temp.erase(index-1);
+		cout << "temp= " << temp << endl;
+		--index;
+	}
+	putback_str(temp);
+
+	temp = "";
+
+	while (cin.get(ch) && (isdigit(ch) || ch == '.' || ch == '-'))
+	{
+		if (ch == '.') { dec_flag = true; }
+		else 
+		{
+			temp += ch;
+			if (dec_flag)
+				dec_places += 1;
+		}
 	}
 
-	if (neg == true) temp = -temp;
+	putback_str(temp);
+	int res;
+	cin >> res;
+	cout << "res= " << res << endl;
+	cout << "temp= " << temp << endl;
+	ret.push_back(res);
+	ret.push_back(dec_places);
 
-	ret.push_back(temp);
-	ret.push_back(decimal_places);
-
+	cin.clear();
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
 	return ret;
 }
 
