@@ -117,16 +117,8 @@ string to_str_with_precision(double d)
 	return ret;
 }
 
-vector<int> remove_decimals(double x)
+string remove_trailing_zero(string temp)
 {
-	string temp;
-	char ch;
-	bool dec_flag = false;
-	int dec_places = 0;
-	vector<int> ret;
-	
-	temp = to_str_with_precision(x);
-	// remove trailing zeros
 	char c_del = '0';
 	int index = temp.size();
 	while (c_del == '0')
@@ -138,6 +130,20 @@ vector<int> remove_decimals(double x)
 		cout << "temp= " << temp << endl;
 		--index;
 	}
+
+	return temp;
+}
+
+vector<int> remove_decimals(double x)
+{
+	string temp;
+	char ch;
+	bool dec_flag = false;
+	int dec_places = 0;
+	vector<int> ret;
+	
+	temp = to_str_with_precision(x);
+	temp = remove_trailing_zero(temp);
 	putback_str(temp);
 
 	temp = "";
