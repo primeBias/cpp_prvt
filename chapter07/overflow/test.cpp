@@ -16,9 +16,7 @@ string to_str_with_precision(double d)
 	ostringstream out;
 	out.precision(15);
 	out << d;
-	cout << "out.str()= " << out.str() << endl;
 	string ret = out.str();
-	cout << "ret= " << ret << endl;
 	return ret;
 }
 
