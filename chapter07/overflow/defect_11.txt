@@ -1,0 +1,65 @@
+11. 99 .000000001
+	overflow error
+	FAIL (result = 99)
+
+Issue:
+	to_str_with_precision() is translating the second argument to scientific
+	notation. This must be translated into double form.
+
+Solution:
+	Create a new function that translates a string-double from scientific
+	notation to non-scientific notation representation.
+
+Technical details:
+	1. Take string in scientific notation and obtain significand
+	2. Parse string further and obtain exponential value
+	3. Create string according to these values
+	4. If exponential > 0
+		move decimal of significand to right most positions
+		subtract from exponential value each time
+		continue until right most position is reached or exponential reaches 0
+		if right most position is reached and exponential > 0
+			concat a '0' `exponential value` number of times to the right
+		return the string
+	5. if exponential < 0
+		move decimal of significand to the left most positions
+		add to the exponential value each time
+		continue until the left most position is reached or exponential reaches 0
+		if left most position is reached and exponential < 0
+			concat a '0' `exponential value` number of times to the left
+		concat a '.' to the left of the double
+		return string
+
+string build_int()
+	char ch;
+	string number;
+	while (cin.get(ch) && (char == '-' || isdigit(ch))) number += ch;
+	cin.putback(ch);
+	return number;
+
+string sci_to_d(string s)
+	string significand;
+	char ch;
+	significand = build_int();
+	cin.get(ch);
+	if (ch != 'e') throw runtime_error("sci_to_d(): Expected 'e' for exponential");
+	string exponential = build_int();
+
+	// 1.23456e4
+	// 123456
+	// 12345.6
+	int decimal_index = 0;
+	significand.erase(1);
+	while (exponential > 0)
+		if (decimal_index == significand.size()-1 && exponential > 1) 
+			significand += '0';
+			--exponential;
+		else if (exponential == 1 && decimal_index < significand.size()-2)
+			significand.insert(decimal_index, '.');
+			--exponential
+		else
+			++decimal_index;
+			--exponential;
+
+	
+		

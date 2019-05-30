@@ -20,6 +20,7 @@ string to_str_with_precision(double d)
 	out.precision(15);
 	out << d;
 	string ret = out.str();
+	cout << "to_str_with_precision(): " << ret << endl;
 	return ret;
 }
 
@@ -47,6 +48,23 @@ string remove_trailing_zero(string temp)
 	return temp;
 }
 
+string sci_to_d(string s)
+{
+	putback_str(s);
+	// read in char by char and get the significand
+	char ch;
+	string significand;
+	string degree;
+	while (cin.get(ch) && (ch == '-' || isdigit(ch))) significand += ch;
+	if (ch != 'e') throw runtime_error("expected 'e' for exponential notation");
+
+	// get the power of 10
+	while (cin.get(ch) && (ch == '-' || isdigit(ch))) degree += ch; 
+
+	// create a string as double
+	// 
+	return "";
+}
 // problem: for doubles with a large amount of precision,
 // the '.' character is not being recognized.
 // solution: the problem has to do with to_str_with_precision. 
