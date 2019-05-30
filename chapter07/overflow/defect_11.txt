@@ -38,21 +38,34 @@ string build_int()
 	return number;
 
 string sci_to_d(string s)
+	putback_str(s);
+
 	string significand;
 	char ch;
+
 	significand = build_int();
 	cin.get(ch);
-	if (ch != 'e') throw runtime_error("sci_to_d(): Expected 'e' for exponential");
-	string exponential = build_int();
 
-	// 1.23456e4
-	// 123456
-	// 12345.6
+	if (ch != 'e') throw runtime_error("sci_to_d(): Expected 'e' for exponential");
+	int exponential;
+	cin >> exponential;
+
+	if (!cin) throw runtime_error("Invalid input for variable `exponential`.");
+	cin.ignore();
+
 	int decimal_index = 0;
-	significand.erase(1);
+	if (significand[0] == '-')
+	{
+		significand.erase(0,1);
+		neg = true;
+	}
+	if (significand[0] == '.') significand.erase(0,1);
+	if (significand[1] == '.') significand.erase(1,1);	// think about this line of code
+
 	while (exponential > 0)
-		if (decimal_index == significand.size()-1 && exponential > 1) 
+		if (decimal_index == significand.size()-1 && exponential > 0) 
 			significand += '0';
+			++decimal_index;
 			--exponential;
 		else if (exponential == 1 && decimal_index < significand.size()-2)
 			significand.insert(decimal_index, '.');
@@ -61,5 +74,8 @@ string sci_to_d(string s)
 			++decimal_index;
 			--exponential;
 
-	
+	string ret = significand;
+	if (neg) ret = '-' + ret;
+
+	return ret;
 		
