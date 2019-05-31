@@ -41,6 +41,7 @@ string sci_to_d(string s)
 
 	int decimal_index = 0;
 	bool neg = false;
+	bool no_int = false;
 	if (significand[0] == '-')
 	{
 		significand.erase(0,1);
@@ -49,6 +50,7 @@ string sci_to_d(string s)
 	if (significand[0] == '.') 
 	{
 		decimal_index = -1;
+		no_int = true;
 		significand.erase(0,1);
 	}
 	if (significand[1] == '.') significand.erase(1,1);
@@ -73,7 +75,15 @@ string sci_to_d(string s)
 		}
 	}
 
+	++exponential; 		// removing decimal is equivalent to applying factor of 10 in below case.
+	while (exponential < 0)
+	{
+		significand = '0' + significand;
+		++exponential;
+	}
 	
+	if (exponential == 0) significand = '.' + significand;
+
 	string ret = significand;
 	if (neg) ret = '-' + ret;
 

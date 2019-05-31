@@ -1,0 +1,9 @@
+
+	5. if exponential < 0
+		move decimal of significand to the left most positions
+		add to the exponential value each time
+		continue until the left most position is reached or exponential reaches 0
+		if left most position is reached and exponential < 0
+			concat a '0' `exponential value` number of times to the left
+		concat a '.' to the left of the double
+		return string

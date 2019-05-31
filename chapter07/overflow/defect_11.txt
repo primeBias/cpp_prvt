@@ -59,8 +59,10 @@ string sci_to_d(string s)
 		significand.erase(0,1);
 		neg = true;
 	}
-	if (significand[0] == '.') significand.erase(0,1);
-	if (significand[1] == '.') significand.erase(1,1);	// think about this line of code
+	if (significand[0] == '.')
+		decimal_index = -1;
+		significand.erase(0,1);
+	if (significand[1] == '.') significand.erase(1,1);	
 
 	while (exponential > 0)
 		if (decimal_index == significand.size()-1 && exponential > 0) 
@@ -73,6 +75,12 @@ string sci_to_d(string s)
 		else
 			++decimal_index;
 			--exponential;
+	
+	if (!no_int) ++exponential;			// removing decimal place is equivalent to applying one factor of 10. 
+	while (exponential < 0)
+		significand = '0' + significand;
+		++exponential
+		if (exponential == 0) significand = '.' + significand;
 
 	string ret = significand;
 	if (neg) ret = '-' + ret;
