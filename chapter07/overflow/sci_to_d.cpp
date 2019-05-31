@@ -34,6 +34,8 @@ string sci_to_d(string s)
 	if (ch != 'e') throw runtime_error("sci_to_d(): Expected 'e' for exponential.");
 	int exponential;
 	cin >> exponential;
+	if (!cin) throw runtime_error("sci_to_d(): Invalid input for variable `exponential`.");
+	if (exponential == 0) throw runtime_error("sci_to_d(): Illegal: Exponential value is in (-1,1) range.");
 	cin.ignore();			// this line is necessary to stop invalid input on next loop.
 	cout << "starting exponential= " << exponential << endl;
 
@@ -44,7 +46,11 @@ string sci_to_d(string s)
 		significand.erase(0,1);
 		neg = true;
 	}
-	if (significand[0] == '.') significand.erase(0,1);
+	if (significand[0] == '.') 
+	{
+		decimal_index = -1;
+		significand.erase(0,1);
+	}
 	if (significand[1] == '.') significand.erase(1,1);
 	cout << "significand with no decimal= " << significand << endl;
 	while (exponential > 0)
@@ -52,8 +58,6 @@ string sci_to_d(string s)
 		if (decimal_index == significand.size()-1 && exponential > 0)		
 		{
 			significand += '0';
-			cout << "exponential= " << exponential << endl;
-			cout << "decimal_index= " << decimal_index << endl;
 			++decimal_index;
 			--exponential;
 		}
@@ -64,7 +68,6 @@ string sci_to_d(string s)
 		}
 		else
 		{
-			cout << "else: exponential= " << exponential << endl;
 			++decimal_index;
 			--exponential;
 		}

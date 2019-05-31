@@ -1,7 +1,15 @@
 13. .12345e6
 	123450
-	FAIL (res= 1.2345)
+	FAIL (res= 1234500)
 
 14.	.1e2
 	10
 	FAIL (res= 10)
+
+Issue:
+Decimal_index must start at -1 if there is no integer value in the double (i.e. '.'
+is the first character after a possible '-' sign).
+
+Solution:
+If the first character of the double after a possible '-' sign is a '.', set
+decimal_index to -1 before the while loop begins.
