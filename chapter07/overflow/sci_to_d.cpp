@@ -6,6 +6,8 @@
 #include <limits>
 using namespace std;
 
+// builds a number fron standard input.
+// returns the number in string format.
 string build_int()
 {
 	char ch;
@@ -46,6 +48,7 @@ vector<bool> remove_dec_significand(string& significand)
 	return ret;
 }
 
+// sci_to_d() subroutine for cases when exponential > 0.
 void sci_to_d_exp_grtr_zero(int& decimal_index, int& exponential, string& significand)
 {
 	while (exponential > 0)
@@ -69,6 +72,7 @@ void sci_to_d_exp_grtr_zero(int& decimal_index, int& exponential, string& signif
 	}
 }
 
+// sci_to_d() subroutine for cases when exponential < 0.
 void sci_to_d_exp_less_zero(int& decimal_index, int& exponential, string& significand)
 {
 	while (exponential < 0)
@@ -84,7 +88,6 @@ void get_significand_exponential(string& significand, int& exponential)
 {
 	char ch;
 	significand = build_int();
-	cout << "significand= " << significand << "\tsignificand.size()= " << significand.size() << endl;
 	cin.get(ch);
 	if (ch != 'e') throw runtime_error("sci_to_d(): Expected 'e' for exponential.");
 	cin >> exponential;
@@ -101,16 +104,13 @@ string sci_to_d(string s)
 	int exponential;
 	get_significand_exponential(significand, exponential);
 
-	cout << "starting exponential= " << exponential << endl;
-
 	int decimal_index = 0;
 	
 	vector<bool> preprocessed_significand = remove_dec_significand(significand); 
 	
 	bool neg = preprocessed_significand[0];
 	bool no_int = preprocessed_significand[1];
-	if (no_int) decimal_index--;		// necessary adjustment for case of no_int		
-	cout << "significand with no decimal= " << significand << endl;
+	if (no_int) decimal_index--;				// necessary adjustment for case of no_int		
 
 	sci_to_d_exp_grtr_zero(decimal_index, exponential, significand);
 	++exponential; 		// removing decimal is equivalent to applying factor of 10 in below case.
@@ -122,13 +122,13 @@ string sci_to_d(string s)
 	return ret;
 }
 
+// translate double to string with precision
 string to_str_with_precision(double d)
 {
 	ostringstream out;
 	out.precision(15);
 	out << d;
 	string ret = out.str();
-	cout << "to_str_with_precision(): " << ret << endl;
 	return ret;
 }
 
