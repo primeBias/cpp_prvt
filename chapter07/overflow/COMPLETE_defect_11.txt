@@ -54,6 +54,8 @@ string sci_to_d(string s)
 	cin.ignore();
 
 	int decimal_index = 0;
+	bool neg = false;
+	bool no_int = false;
 	if (significand[0] == '-')
 	{
 		significand.erase(0,1);
