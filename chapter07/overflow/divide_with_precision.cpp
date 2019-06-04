@@ -166,13 +166,6 @@ bool is_scientific(string s)
 	return false;
 }
 
-// problem: for doubles with a large amount of precision,
-// the '.' character is not being recognized.
-// solution: the problem has to do with to_str_with_precision. 
-// more specifically, doubles get translated to scientific
-// notation when put to a string. Easiest thing to do would
-// be able to parse and translate the scientific notation
-// into an equivalent string.
 vector<int> remove_decimals(double x)
 {
 	string temp;
