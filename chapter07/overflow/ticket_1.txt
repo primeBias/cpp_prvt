@@ -1,3 +1,11 @@
 Task:
 	Implement division with precision to use doubles that are truncated after 
 	`x` number of digits.
+
+Solution:
+	Convert the value types to double. This will cause each of the
+	functions to have a small decimal value as per estimation 
+	operations of doubles. Truncate each of these for `x` digits
+	of precision and hope that it doesn't break. Create a function
+	to truncate a double and return it, will this estimate the 
+	double again and add some value? Check.

@@ -207,9 +207,9 @@ vector<int> remove_decimals(double x)
 
 // Divides `a` by `b` and returns a vector of ints.
 // Returns:
-// [1] = quotient
-// [2] = remainder
-// [3] = negative number flag
+// [0] = quotient
+// [1] = remainder
+// [2] = negative number flag
 vector<int> divide(int a, int b)
 {
 	vector<int> ret;
