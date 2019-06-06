@@ -1,0 +1,2 @@
+Task:
+	Create a shell script to compile each .cpp file in a directory and executes them.

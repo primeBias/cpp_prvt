@@ -1,0 +1,5 @@
+Task:
+	Create a macro for error fallout tests.
+
+Solution:
+	Check here: https://stackoverflow.com/questions/15668309/c-assertion-function-to-check-that-exception-is-thrown
