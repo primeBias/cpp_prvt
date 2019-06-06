@@ -19,8 +19,7 @@ string build_int()
 
 void putback_str(string s)
 {
-	for (int i = s.size(); i >=0; --i)
-		cin.putback(s[i]);
+	for (int i = s.size(); i >=0; --i) cin.putback(s[i]);
 }
 
 // Prepocess the significand by removing the decimal and negative signs if any.
@@ -106,36 +105,34 @@ string to_str_with_precision(double d)
 	return ret;
 }
 
+// Removes trailing zeros from a double that is represented as a string.
 string remove_trailing_zero(string temp)
 {
 	char c_del = '0';
 	int index = temp.size();
 	bool decimal_found = false;
 	for (int i = 0; i < temp.size(); ++i)
-	{
 		if (temp[i] == '.') decimal_found = true;
-	}
 
-	if (!decimal_found) return temp; 	// no trailing zeros to remove
+	if (!decimal_found) return temp; 	
 	while (c_del == '0')
 	{
 		c_del = temp[index-1];
-		cout << "c_del= " << c_del << endl;
-		if (c_del == '0')
-			temp.erase(index-1);
-		cout << "temp= " << temp << endl;
+		if (c_del == '0') temp.erase(index-1);
 		--index;
 	}
 
 	return temp;
 }
 
+// Converts string representation of double from scientific notation to
+// standard notation.
 string sci_to_d(string s)
 {
 	putback_str(s);
 
 	string significand;
-	int exponential;
+	int exponential;		// for ticket_1 does this have to be long long int?
 	get_significand_exponential(significand, exponential);
 
 	int decimal_index = 0;
@@ -159,13 +156,14 @@ string sci_to_d(string s)
 bool is_scientific(string s)
 {
 	for (int i = 0; i < s.size(); ++i)
-	{
 		if (s[i] == 'e') return true;
-	}
 
 	return false;
 }
 
+// Returns:
+// 	[0]: Number without decimal
+// 	[1]: Decimal position
 vector<int> remove_decimals(double x)
 {
 	string temp;
@@ -177,19 +175,17 @@ vector<int> remove_decimals(double x)
 	temp = to_str_with_precision(x);
 	if (is_scientific(temp)) temp = sci_to_d(temp);	
 	temp = remove_trailing_zero(temp);
-	cout << "temp= " << setprecision(15) << temp << endl;
 	putback_str(temp);
 
 	temp = "";
 
 	while (cin.get(ch) && (isdigit(ch) || ch == '.' || ch == '-'))
 	{
-		if (ch == '.') { cout << "decl_flag= true" << endl; dec_flag = true; }
+		if (ch == '.') dec_flag = true; 
 		else 
 		{
 			temp += ch;
-			if (dec_flag)
-				dec_places += 1;
+			if (dec_flag) dec_places += 1;
 		}
 	}
 
@@ -226,6 +222,7 @@ vector<int> divide(int a, int b)
 	if (b < 0) b = -b;
 	do	
 	{
+		// may be able to refactor this to be more simple
 		if (temp - b >= 0)
 		{
 			temp -= b;
@@ -306,10 +303,10 @@ int main()
 		double a, b;
 		cout << ">";
 		cin >> a >> b;
-		if (!cin)
-			throw runtime_error("Invalid input.");
+		if (!cin) throw runtime_error("Invalid input.");
 		cout << "dividing..." << endl;
-		cout << setprecision(15) << a << " / " << b << "= " << divide_with_precision(a, b) << endl;
+		double ret = divide_with_precision(a,b);
+		cout << setprecision(15) << a << " / " << b << "= " << ret << endl;
 	}
 	catch (exception& e)
 	{

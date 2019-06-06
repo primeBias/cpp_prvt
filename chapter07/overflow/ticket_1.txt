@@ -1,11 +1,21 @@
 Task:
-	Implement division with precision to use doubles that are truncated after 
-	`x` number of digits.
+	Implement use of long long ints in the divide with precision
+	function.
 
 Solution:
-	Convert the value types to double. This will cause each of the
-	functions to have a small decimal value as per estimation 
-	operations of doubles. Truncate each of these for `x` digits
-	of precision and hope that it doesn't break. Create a function
-	to truncate a double and return it, will this estimate the 
-	double again and add some value? Check.
+	In the remove_decimals function, return a vector of long long ints 
+	rather than int. This will allow for greater precision.
+	In the divide function, return long long ints instead of ints.
+
+	In the divide_with_precision function function, set the final_res 
+	to a long long int instead of an int.
+
+	In add_decimals function, accept long long int as argument instead
+	of an int. In this same function, check for overflow of long long
+	int. 
+
+	Check if exponential in sci_to_d() needs to be long long int.
+
+Test case 1:
+	1e26 / .1
+	Result = 1e25
