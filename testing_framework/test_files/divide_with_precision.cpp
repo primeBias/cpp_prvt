@@ -4,6 +4,7 @@
 #include <vector>
 #include <sstream>
 #include <iomanip>
+#include <assert.h>
 using namespace std;
 
 // builds a number fron standard input.
@@ -192,11 +193,8 @@ vector<int> remove_decimals(double x)
 	putback_str(temp);
 	int res;
 	cin >> res;
-	cout << "res= " << res << endl;
-	cout << "temp= " << temp << endl;
 	ret.push_back(res);
 	ret.push_back(dec_places);
-	cout << "dec_places= " << dec_places << endl;
 	cin.ignore(); // this removes the pause
 	return ret;
 }
@@ -270,20 +268,15 @@ double divide_with_precision(double a, double b)
 
 	decimal_places = temp_a[1] - temp_b[1];
 
-	cout << "temp_a= " << temp_a[0] << "\ttemp_b= " << temp_b[0] << endl;
 	vector<int> res = divide(temp_a[0], temp_b[0]);
 	final_res = res[0];
 	if (res[2] == -1) neg = true;
-	cout << "division result..." << endl;
-	cout << res[0] << 'r' << res[1] << endl;
 
 	for (int i = 0; i < 8; ++i)		// 8 digits of precision
 	{
 		if (res[1] != 0)			// if remainder is not 0
 		{
 			res = divide(res[1]*10, temp_b[0]);
-			cout << "division result..." << endl;
-			cout << res[0] << 'r' << res[1] << endl;
 			decimal_places += 1;
 			final_res *= 10;
 			if (final_res > numeric_limits<int>::max() - res[0]) throw runtime_error("divide_with_precision(): Overflow error.");
@@ -291,27 +284,51 @@ double divide_with_precision(double a, double b)
 		}
 	}
 	
-	cout << "decimal_places= " << decimal_places << endl;	
 	if (neg) final_res = -final_res; 	
 	return add_decimals(final_res, decimal_places);
 }
 
+// Test file function
+bool equals(double a, double b)
+{
+	double epsilon = .00001;
+	if (a - b > epsilon) return false;
+	return true;
+}
+
 int main()
 {
-	while (true) try
-	{
-		double a, b;
-		cout << ">";
-		cin >> a >> b;
-		if (!cin) throw runtime_error("Invalid input.");
-		cout << "dividing..." << endl;
-		double ret = divide_with_precision(a,b);
-		cout << setprecision(15) << a << " / " << b << "= " << ret << endl;
-	}
-	catch (exception& e)
-	{
-		cerr << "Error: " << e.what() << endl;
-		cin.clear();
-		cin.ignore(numeric_limits<streamsize>::max(), '\n');
-	}
+	// Test 1
+	assert(equals(divide_with_precision(10, 4), 2.5));
+
+	// Test 2
+	assert(equals(divide_with_precision(1, 6), .16666666));
+	
+	// Test 3
+	assert(equals(divide_with_precision(7, 8), .875));
+
+	// Test 4
+	assert(equals(divide_with_precision(1, .1), 10));
+
+	// Test 5
+	assert(equals(divide_with_precision(10, .1), 100));
+
+	// Test 6
+	assert(equals(divide_with_precision(-4, 3), -1.333333));
+
+	// Test 7
+	assert(equals(divide_with_precision(-4, .02), -200));
+
+	// Test 8
+	assert(equals(divide_with_precision(-7, -12), .583333));
+
+	// Test 9
+	assert(equals(divide_with_precision(-6, -5), 1.2));
+
+	// Test 10
+	assert(equals(divide_with_precision(-90, .3), -300));
+
+	cout << "divide_with_precision.cpp PASSED: 10 test cases executed." << endl;
+
 }
+

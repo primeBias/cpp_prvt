@@ -1,0 +1,24 @@
+Task:
+	Create an outline of a unit test framework that contains 
+	test assertions for a function. 
+
+Solution:
+	Create cpp files for each function to be tested. Within
+	this file, implement the function and its dependencies;
+	then, enter the test cases with an assertion into main().
+
+#include iostream
+#include assert.h
+#include vector
+
+// implement the function and dependencies
+bool equals(double a, double b)
+	double epsilon = .0000000001;
+	if (a - b > epsilon)
+		return false;
+	return true;
+
+// create tests
+int main() 
+	assert(function(a,b) == x);
+	assert(equals(function(a,b),x));
