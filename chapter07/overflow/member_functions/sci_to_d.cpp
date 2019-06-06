@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <sstream>
 #include <limits>
+#include <assert.h>
 using namespace std;
 
 // builds a number fron standard input.
@@ -19,8 +20,7 @@ string build_int()
 
 void putback_str(string s)
 {
-	for (int i = s.size(); i >=0; --i)
-		cin.putback(s[i]);
+	for (int i = s.size(); i >=0; --i) cin.putback(s[i]);
 }
 
 // Prepocess the significand by removing the decimal and negative signs if any.
@@ -96,12 +96,14 @@ void get_significand_exponential(string& significand, int& exponential)
 	cin.ignore();			// this line is necessary to stop invalid input on next loop.
 }
 
+// Converts string representation of double from scientific notation to
+// standard notation.
 string sci_to_d(string s)
 {
 	putback_str(s);
 
 	string significand;
-	int exponential;
+	int exponential;		// for ticket_1 does this have to be long long int?
 	get_significand_exponential(significand, exponential);
 
 	int decimal_index = 0;
@@ -122,30 +124,65 @@ string sci_to_d(string s)
 	return ret;
 }
 
-// translate double to string with precision
-string to_str_with_precision(double d)
-{
-	ostringstream out;
-	out.precision(15);
-	out << d;
-	string ret = out.str();
-	return ret;
-}
 
 int main()
 {
+	bool exception_thrown = false;
+	int x = 1;
+	// Test 1
+	assert(sci_to_d("1e10") == "10000000000");
 
-	string test;
-	while (cin >> test) try
-	{
-		string res = sci_to_d(test);
+	// Test 2
+	assert(sci_to_d("1.23e5") == "123000");
 
-		cout << "sci_to_d(" << test << ")= " << res << endl;
-	}
-	catch (exception& e)
-	{
-		cerr << "Error: " << e.what() << endl;
-		cin.clear();
-		cin.ignore(numeric_limits<streamsize>::max(), '\n');
-	}
+	// Test 3
+	try { sci_to_d(".234e.5"); }
+	catch (exception& e) { exception_thrown = true;	}
+	catch (...)	{ exception_thrown = true; }
+
+	assert(exception_thrown);
+
+	exception_thrown = false;
+	cin.clear();
+	cin.ignore(cin.rdbuf()->in_avail(), '\n');
+
+	// Test 4
+	assert(sci_to_d(".234e4") == "2340");
+
+	// Test 5
+	assert(sci_to_d("-2e6") == "-2000000");
+
+	// Test 6
+	assert(sci_to_d("-2.34e4") == "-23400");
+
+	// Test 7
+	assert(sci_to_d("-.402e9") == "-402000000");
+
+	// Test 8
+	assert(sci_to_d("1e-1") == ".1");
+
+	// Test 10
+	assert(sci_to_d("-2e-3") == "-.002");
+
+	// Test 11
+	assert(sci_to_d("2.432e-6") == ".000002432");	
+
+	// Test 12
+	assert(sci_to_d(".632156e-9") == ".00000000632156");
+
+	// Test 13
+	try { sci_to_d(".24e-.4"); }
+	catch (exception& e) { exception_thrown = true; }
+	catch (...) { exception_thrown = true; }
+
+	assert(exception_thrown);
+
+	exception_thrown = false;
+	cin.clear();
+	cin.ignore(cin.rdbuf()->in_avail(), '\n');
+
+	// Test 14
+	assert(sci_to_d("1e-100") == ".0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001");
+
+	cout << "sci_to_d.cpp PASS: 14 tests executed." << endl;
 }
