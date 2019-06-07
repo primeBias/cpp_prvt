@@ -4,6 +4,7 @@
 int tests_run = 0;
 int tests_passed = 0;
 int tests_failed = 0;
+double epsilon = .000001;
 std::vector<std::string> failed_tests;
 
 #define ASSERT(function, result, test_case)\
@@ -22,8 +23,7 @@ std::vector<std::string> failed_tests;
 
 #define ASSERT_DOUBLE(function, result, test_case)\
 	++tests_run;\
-	double epsilon = .000001;\
-	if (function - result > epsilon) ++tests_passed;\
+	if (function - result < epsilon) ++tests_passed;\
 	else { ++tests_failed; failed_tests.push_back(test_case); }
 
 #define TEST_SUMMARY(file_name)\
