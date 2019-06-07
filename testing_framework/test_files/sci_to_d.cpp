@@ -5,7 +5,7 @@
 #include <sstream>
 #include <limits>
 #include <assert.h>
-#include "../framework.h"
+#include "../test_framework.h"
 using namespace std;
 
 
