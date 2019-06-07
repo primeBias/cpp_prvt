@@ -1,2 +1,5 @@
 Task:
 	Create a shell script to compile each .cpp file in a directory and executes them.
+
+Solution: 
+	https://unix.stackexchange.com/questions/137066/shell-script-to-compile-c-files
