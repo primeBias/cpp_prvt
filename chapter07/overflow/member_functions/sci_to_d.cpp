@@ -5,7 +5,9 @@
 #include <sstream>
 #include <limits>
 #include <assert.h>
+#include "../framework.h"
 using namespace std;
+
 
 // builds a number fron standard input.
 // returns the number in string format.
@@ -127,62 +129,34 @@ string sci_to_d(string s)
 
 int main()
 {
+	string file_name = "sci_to_d.cpp";
 	bool exception_thrown = false;
 	int x = 1;
-	// Test 1
-	assert(sci_to_d("1e10") == "10000000000");
+	ASSERT(sci_to_d("1e10"), "10000000000", "Test 1");
 
-	// Test 2
-	assert(sci_to_d("1.23e5") == "123000");
+	ASSERT(sci_to_d("1.23e5"), "123000", "Test 2");
 
-	// Test 3
-	try { sci_to_d(".234e.5"); }
-	catch (exception& e) { exception_thrown = true;	}
-	catch (...)	{ exception_thrown = true; }
+	ASSERT_ERROR(test_3, sci_to_d(".234e.5"), "Test 3");
+	
+	ASSERT(sci_to_d(".234e4"), "2340", "Test 4");
 
-	assert(exception_thrown);
+	ASSERT(sci_to_d("-2e6"), "-2000000", "Test 5");
 
-	exception_thrown = false;
-	cin.clear();
-	cin.ignore(cin.rdbuf()->in_avail(), '\n');
+	ASSERT(sci_to_d("-2.34e4"), "-23400", "Test 6");
 
-	// Test 4
-	assert(sci_to_d(".234e4") == "2340");
+	ASSERT(sci_to_d("-.402e9"), "-402000000", "Test 7");
 
-	// Test 5
-	assert(sci_to_d("-2e6") == "-2000000");
+	ASSERT(sci_to_d("1e-1"), ".1", "Test 8");
 
-	// Test 6
-	assert(sci_to_d("-2.34e4") == "-23400");
+	ASSERT(sci_to_d("-2e-3"),  "-.002", "Test 9");
 
-	// Test 7
-	assert(sci_to_d("-.402e9") == "-402000000");
+	ASSERT(sci_to_d("2.432e-6"), ".000002432", "Test 10");	
 
-	// Test 8
-	assert(sci_to_d("1e-1") == ".1");
+	ASSERT(sci_to_d(".632156e-9"), ".00000000632156", "Test 11");
 
-	// Test 10
-	assert(sci_to_d("-2e-3") == "-.002");
+	ASSERT_ERROR(test_4, sci_to_d(".24e-.4"), "Test 12");
+	
+	ASSERT(sci_to_d("1e-100"), ".0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001", "Test 13");
 
-	// Test 11
-	assert(sci_to_d("2.432e-6") == ".000002432");	
-
-	// Test 12
-	assert(sci_to_d(".632156e-9") == ".00000000632156");
-
-	// Test 13
-	try { sci_to_d(".24e-.4"); }
-	catch (exception& e) { exception_thrown = true; }
-	catch (...) { exception_thrown = true; }
-
-	assert(exception_thrown);
-
-	exception_thrown = false;
-	cin.clear();
-	cin.ignore(cin.rdbuf()->in_avail(), '\n');
-
-	// Test 14
-	assert(sci_to_d("1e-100") == ".0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001");
-
-	cout << "sci_to_d.cpp PASS: 14 tests executed." << endl;
+	TEST_SUMMARY(file_name);
 }
