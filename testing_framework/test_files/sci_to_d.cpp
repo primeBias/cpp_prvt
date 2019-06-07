@@ -4,7 +4,10 @@
 #include <stdexcept>
 #include <sstream>
 #include <limits>
+#include <assert.h>
+#include "../framework.h"
 using namespace std;
+
 
 // builds a number fron standard input.
 // returns the number in string format.
@@ -19,8 +22,7 @@ string build_int()
 
 void putback_str(string s)
 {
-	for (int i = s.size(); i >=0; --i)
-		cin.putback(s[i]);
+	for (int i = s.size(); i >=0; --i) cin.putback(s[i]);
 }
 
 // Prepocess the significand by removing the decimal and negative signs if any.
@@ -96,12 +98,14 @@ void get_significand_exponential(string& significand, int& exponential)
 	cin.ignore();			// this line is necessary to stop invalid input on next loop.
 }
 
+// Converts string representation of double from scientific notation to
+// standard notation.
 string sci_to_d(string s)
 {
 	putback_str(s);
 
 	string significand;
-	int exponential;
+	int exponential;		// for ticket_1 does this have to be long long int?
 	get_significand_exponential(significand, exponential);
 
 	int decimal_index = 0;
@@ -122,30 +126,37 @@ string sci_to_d(string s)
 	return ret;
 }
 
-// translate double to string with precision
-string to_str_with_precision(double d)
-{
-	ostringstream out;
-	out.precision(15);
-	out << d;
-	string ret = out.str();
-	return ret;
-}
 
 int main()
 {
+	string file_name = "sci_to_d.cpp";
+	bool exception_thrown = false;
+	int x = 1;
+	ASSERT(sci_to_d("1e10"), "10000000000", "Test 1");
 
-	string test;
-	while (cin >> test) try
-	{
-		string res = sci_to_d(test);
+	ASSERT(sci_to_d("1.23e5"), "123000", "Test 2");
 
-		cout << "sci_to_d(" << test << ")= " << res << endl;
-	}
-	catch (exception& e)
-	{
-		cerr << "Error: " << e.what() << endl;
-		cin.clear();
-		cin.ignore(numeric_limits<streamsize>::max(), '\n');
-	}
+	ASSERT_ERROR(test_3, sci_to_d(".234e.5"), "Test 3");
+	
+	ASSERT(sci_to_d(".234e4"), "2340", "Test 4");
+
+	ASSERT(sci_to_d("-2e6"), "-2000000", "Test 5");
+
+	ASSERT(sci_to_d("-2.34e4"), "-23400", "Test 6");
+
+	ASSERT(sci_to_d("-.402e9"), "-402000000", "Test 7");
+
+	ASSERT(sci_to_d("1e-1"), ".1", "Test 8");
+
+	ASSERT(sci_to_d("-2e-3"),  "-.002", "Test 9");
+
+	ASSERT(sci_to_d("2.432e-6"), ".000002432", "Test 10");	
+
+	ASSERT(sci_to_d(".632156e-9"), ".00000000632156", "Test 11");
+
+	ASSERT_ERROR(test_4, sci_to_d(".24e-.4"), "Test 12");
+	
+	ASSERT(sci_to_d("1e-100"), ".0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001", "Test 13");
+
+	TEST_SUMMARY(file_name);
 }
